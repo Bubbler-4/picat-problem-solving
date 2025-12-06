@@ -1,0 +1,28 @@
+main(["1"])=>p1.
+main(["2"])=>p2.
+
+p1=>
+    Lines = read_file_lines(),
+    Ans = 0,
+    Cur = 50,
+    foreach([C|N] in Lines)
+        D = cond(C='L',-1,1)*to_int(N),
+        Cur := Cur + D,
+        if(Cur mod 100 = 0) Ans := Ans + 1 end
+    end,
+    print(Ans).
+
+p2=>
+    Lines = read_file_lines(),
+    Ans = 0,
+    Cur = 50,
+    foreach([C|N] in Lines)
+        foreach(_ in 1..to_int(N))
+            D = cond(C='L',-1,1) + Cur,
+            if(Cur mod 100 = 0) Ans := Ans + 1 end,
+            Cur := D
+        end
+    end,
+    print(Ans).
+
+% p1 ans = 1172, p2 ans = 6932
