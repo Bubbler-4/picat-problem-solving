@@ -1,0 +1,18 @@
+import util.
+main(["1"])=>p1.
+main(["2"])=>p2.
+
+p1=>
+    Nums = chunks_of(map(to_int,split(read_line(),"-,")),2),
+    Ans = 0,
+    foreach([A,B] in Nums, D in [10**E: E in 1..5], A < D*D, A*100 >= D*D, X in D//10..D-1, Y = X * (D + 1), A<=Y, Y<=B)
+        Ans := Ans + Y
+    end,
+    print(Ans).
+
+p2=>
+    Nums = chunks_of(map(to_int,split(read_line(),"-,")),2),
+    Anses = [Y: [A,B] in Nums, D in [10**E: E in 1..5], P in 2..7, A < D**P, A*10**P >= D**P, X in D//10..D-1, Y = X * (D**P-1)//(D-1), A<=Y, Y<=B],
+    print(sum(Anses.remove_dups)).
+
+% p1 ans = 24043483400, p2 ans = 38262920235
