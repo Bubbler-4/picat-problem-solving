@@ -1,0 +1,4 @@
+aoc download -d 3 -I
+aoc -d 3
+echo $(picat d3.pi 2 < input)
+aoc submit -d 3 2 $(picat d3.pi 2 < input)
