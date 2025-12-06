@@ -1,0 +1,53 @@
+import util.
+import sat.
+main(["1"])=>p1.
+main(["2"])=>p2.
+
+p1=>
+    Lines = read_file_lines(),
+    Ans = 0,
+    foreach([C|T] in Lines)
+        Cur = "00",
+        foreach(D in T)
+            Cur:=max(Cur,[C,D]),
+            C:=max(C,D)
+        end,
+        Ans := Ans + Cur.to_int
+    end,
+    print(Ans).
+
+p1_sat=>
+    Lines = read_file_lines(),
+    Ans = 0,
+    foreach(L in Lines)
+        D = [ord(C) - 48 : C in L],
+        N = len(D),
+        V = new_list(2),
+        V :: 1..N,
+        increasing_strict(V),
+        W = new_list(2),
+        foreach(I in 1..2) element(V[I], D, W[I]) end,
+        T #= 10 * W[1] + W[2],
+        solve([$max(T),[T,V,W]]),
+        println([L,T,V,W]),
+        Ans := Ans + T
+    end,
+    print(Ans).
+
+p2=>
+    Lines = read_file_lines(),
+    Ans = 0,
+    foreach(L in Lines)
+        Cur = 0,
+        N = L.len,
+        Next = 1,
+        foreach(I in 1..12)
+            Max = max(L[Next..N-12+I]),
+            Cur := Cur * 10 + [Max].to_int,
+            Next := find_first_of(L[Next..N-12+I],Max)+Next
+        end,
+        Ans := Ans + Cur
+    end,
+    print(Ans).
+
+% p1 ans = 16973, p2 ans = 168027167146027

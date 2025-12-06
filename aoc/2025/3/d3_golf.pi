@@ -1,0 +1,2 @@
+import util.
+main=>F=read_file_lines(),foreach(X in[2,12])[C:L in F,C=0,N=L.len,J=1,foreach(I in N-X+1..N)Q=L[J..I],M=Q.max,C:=C*10+M.ord-48,J:=find_first_of(Q,M)+J end].sum.println end.
