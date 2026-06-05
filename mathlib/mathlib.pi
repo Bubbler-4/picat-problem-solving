@@ -1,0 +1,77 @@
+module mathlib.
+
+/*
+gcd/2: the GCD of two integers (provided by math)
+lcm/2: the LCM of two integers
+gcd/1, lcm/1: the GCD and LCM of a list of numbers respectively
+*/
+gcd(List) = reduce(gcd, List).
+lcm(X, Y) = X /< gcd(X, Y) * Y.
+lcm(List) = reduce(lcm, List).
+
+/*
+primes/1: the list of primes up to N, using Eratosthenes' sieve (already exists)
+*/
+/*
+primes(N) = [X: X in 2..N, Sieve[X] = 1] =>
+    Sieve = new_array(N), % use an array of free variables, where Sieve[I] is instantiated to 0 when I is composite
+    foreach (P in 2..N)
+        if (Sieve[P] = 1) then % if not instantiated yet, it is instantiated to 1
+            foreach (Q in P*P .. P .. N)
+                Sieve[Q] = 0
+            end
+        end
+    end.
+*/
+/*
+factorize/1: the list of [prime, exponent] pairs that constitute the prime factorization of N
+exponent/2: [P-free part of N, the maximum power of P that divides N]
+*/
+
+factorize(N) = factorize(N, 2, []).
+factorize(N, P, Ans) = cond(E > 0, factorize(N2, P+1, [[P, E]|Ans]), factorize(N, P+1, Ans)),
+    P * P <= N => [N2, E] = exponent(N, P).
+factorize(N, P, Ans) = reverse(cond(N > 1, [[N, 1]|Ans], Ans)).
+
+exponent(N, P) = exponent(N, P, 0).
+exponent(N, P, E) = cond(N mod P > 0, [N, E], exponent(N /< P, P, E + 1)).
+
+/*
+miller_rabin/1: test if N is prime using Miller-Rabin primality test; the hardcoded base set ensures correctness for P < 2^64
+*/
+miller_rabin(N, Base) =>
+    A = Base mod N,
+    (A = 0;
+        [D, S] = exponent(N-1, 2),
+        X = pow(A, D, N),
+        Y = X,
+        foreach(_ in 1..S)
+            Y := X * X mod N,
+            not (Y = 1, X != 1, X != N-1),
+            X := Y
+        end,
+        Y = 1
+    ).
+miller_rabin(N) => N = 2; N mod 2 != 0,
+    len([1 : Base in [2, 325, 9375, 28178, 450775, 9780504, 1795265022], miller_rabin(N, Base)]) = 7.
+
+/*
+cumsum/1: cumulative sum
+*/
+cumsum(L) = cumsum(L, 0).
+cumsum([],_) = [].
+cumsum([H|T],S) = [H+S|cumsum(T,H+S)].
+
+/*
+replicate/2: repeat a list or array L N times, flattened
+*/
+replicate(L, N) = {X: _ in 1..N, X in L}, array(L) => true.
+replicate(L, N) = [X: _ in 1..N, X in L], list(L) => true.
+
+/*
+pow/3: N**E mod M but more efficient (pow_mod exists)
+*/
+/*
+pow(N, 0, M) = 1.
+pow(N, E, M) = cond(E mod 2 = 1, N * Rec mod M, Rec) => Rec = pow(N*N mod M, E /< 2, M).
+*/
