@@ -43,7 +43,7 @@ miller_rabin(N, Base) =>
     A = Base mod N,
     (A = 0;
         [D, S] = exponent(N-1, 2),
-        X = pow(A, D, N),
+        X = pow_mod(A, D, N),
         Y = X,
         foreach(_ in 1..S)
             Y := X * X mod N,
