@@ -1,0 +1,17 @@
+module p%P.
+import mathlib.
+
+/*
+Problem:
+Example:
+Solution:
+*/
+
+sol(_) = 0.
+
+test =>
+	foreach (Input in [_])
+		printf("%%w => %%w%%n", Input, sol(Input))
+	end.
+
+main => time(test).
