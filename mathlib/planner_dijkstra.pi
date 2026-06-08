@@ -1,0 +1,25 @@
+module planner_dijkstra.
+
+/*
+Planner-like interface for running Dijkstra's algorithm to find the shortest path.
+Required function:
+action(S) returns a list of (NextS, Action, Cost) triples.
+Provided function:
+dijkstra(Start) returns the map of State -> (Cost, Path).
+*/
+
+dijkstra(Start, Action) = Map =>
+    Map = new_map(),
+    Heap = new_min_heap([(0, Start, [])]),
+    while (not Heap.heap_is_empty())
+        (Cost, State, Path) = Heap.heap_pop(),
+        if ((Cost, Path) @< Map.get(State, (inf, []))) then
+            Map.put(State, (Cost, Path)),
+            Actions = apply(Action, State),
+            foreach ((NextS, NextAction, NextCost) in Actions)
+                if ((Cost + NextCost, [[]]) @< Map.get(NextS, (inf, []))) then
+                    Heap.heap_push((Cost + NextCost, NextS, [NextAction | Path]))
+                end
+            end
+        end
+    end.
