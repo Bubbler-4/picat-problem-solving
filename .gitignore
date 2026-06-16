@@ -3,3 +3,4 @@
 solutions.txt
 pe/p*.pi
 scratch.pi
+pe/*/p*.pi
