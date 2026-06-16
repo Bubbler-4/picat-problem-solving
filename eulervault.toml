@@ -1,3 +1,3 @@
 filepath = "pe/%g/p%P.pi"
 template = "template.pi"
-test = "picat -path mathlib pe/p%P.pi"
+test = "picat -path mathlib pe/%g/p%P.pi"
